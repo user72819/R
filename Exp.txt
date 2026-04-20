@@ -519,7 +519,7 @@ local LatestValue = true
 local Lighting = nil
 
 task.spawn(function()
-    while task.wait() do
+    while task.wait(0.1) do
         if number1number2 then
             if not FullBrightExecuted then
                 Lighting = game:GetService("Lighting")
@@ -642,7 +642,7 @@ SettingsTab:CreateToggle({
 })
 
 task.spawn(function()
-    while task.wait(1) do
+    while task.wait(0.1) do
         if MyToggleEnabled123 then
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
