@@ -53,7 +53,7 @@ local TargetRightArm = false
 local TargetLeftLeg = false
 local TargetRightLeg = false
 
-TargetTab:CreateSection("Target Selection")
+TargetTab:CreateSection("Target Body Part")
 
 TargetTab:CreateToggle({
     Name = "Target Head",
@@ -175,7 +175,7 @@ InfoTab:CreateSection("D")
 InfoTab:CreateParagraph({Title = "Discord", Content = "Dm greenguy0cool_74762 for any suggestions what to add."})
 
 InfoTab:CreateSection("T")
-InfoTab:CreateParagraph({Title = "Team", Content = "Some games may have custom teams so this will not work or error."})
+InfoTab:CreateParagraph({Title = "Team", Content = "This may not work or may cause errors in games with custom teams."})
 
 InfoTab:CreateSection("V")
 InfoTab:CreateParagraph({Title = "Version", Content = "This v1.0.0 universal aimbot code will be open-source soon."})
@@ -630,6 +630,244 @@ task.spawn(function()
         end
     end
 end)
+
+local MyToggleEnabled123 = false
+
+SettingsTab:CreateToggle({
+    Name = "Lag Reducer",
+    CurrentValue = false,
+    Callback = function(Value)
+        MyToggleEnabled123 = Value
+    end
+})
+
+task.spawn(function()
+    while task.wait(1) do
+        if MyToggleEnabled123 then
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local ContentProvider = game:GetService("ContentProvider")
+local Stats = game:GetService("Stats")
+
+local player = Players.LocalPlayer
+local camera = Workspace.CurrentCamera
+
+local CONFIG = {
+	ReduceParticles = true,
+	ReduceTextures = true,
+	DisableShadows = true,
+	DisableBloom = true,
+	LowerLOD = true,
+	SetLightingMode = "Compatibility",
+	GlobalShadows = false,
+	Technology = Enum.Technology.Compatibility,
+	StreamingEnabled = true,
+	StreamingMode = "LowPriority",
+	ClearMemoryInterval = 60,
+	ReduceAnimationQuality = true,
+	HideExpensiveUI = true,
+	MaxFPS = 240,
+	DisableCharacterParticles = true
+}
+
+local function optimizeInstance(instance)
+	if not instance then return end
+
+	if instance:IsA("BasePart") then
+		instance.CastShadow = false
+		if CONFIG.LowerLOD then
+			if instance:IsA("MeshPart") then
+				instance.RenderFidelity = Enum.RenderFidelity.Performance
+			end
+		end
+	end
+
+	if CONFIG.ReduceParticles then
+		if instance:IsA("ParticleEmitter") then
+			instance.Rate = math.max(0, instance.Rate * 0.1)
+			instance.Lifetime = NumberRange.new(0.1, 0.5)
+		end
+		if instance:IsA("Trail") then
+			instance.Lifetime = 0.1
+		end
+		if instance:IsA("Smoke") or instance:IsA("Fire") then
+			instance.Enabled = false
+		end
+		if instance:IsA("Sparkles") then
+			instance.Enabled = false
+		end
+	end
+
+	if instance:IsA("Light") then
+		instance.Shadows = false
+		instance.Range = math.min(instance.Range, 30)
+		if instance:IsA("PointLight") or instance:IsA("SpotLight") then
+			instance.Brightness = instance.Brightness * 0.5
+		end
+	end
+
+	if CONFIG.ReduceTextures then
+		if instance:IsA("Decal") or instance:IsA("Texture") then
+			if instance.Transparency > 0.9 then
+				instance:Destroy()
+			end
+		end
+	end
+
+	if instance:IsA("ScreenGui") then
+		if CONFIG.HideExpensiveUI then
+			for _, child in ipairs(instance:GetDescendants()) do
+				if child:IsA("UIStroke") then
+					child.Thickness = math.min(child.Thickness, 2)
+				end
+			end
+		end
+	end
+end
+
+local function optimizeLighting()
+	pcall(function()
+		settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+	end)
+
+	if CONFIG.DisableBloom then
+		for _, effect in ipairs(Lighting:GetChildren()) do
+			if effect:IsA("BloomEffect") or
+				effect:IsA("BlurEffect") or
+				effect:IsA("SunRaysEffect") or
+				effect:IsA("ColorCorrectionEffect") then
+				effect.Enabled = false
+			end
+			if effect:IsA("Atmosphere") then
+				effect.Density = 0
+				effect.Haze = 0
+			end
+		end
+	end
+
+	Lighting.GlobalShadows = CONFIG.GlobalShadows
+	Lighting.Outlines = false
+	Lighting.FogEnd = 1000
+end
+
+local function optimizeWorkspace()
+	local terrain = Workspace:FindFirstChildOfClass("Terrain")
+	if terrain then
+		terrain.WaterWaveSize = 0
+		terrain.WaterWaveSpeed = 0
+		terrain.WaterReflectance = 0
+		terrain.WaterTransparency = 1
+	end
+
+	for _, obj in ipairs(Workspace:GetDescendants()) do
+		optimizeInstance(obj)
+	end
+
+	Workspace.DescendantAdded:Connect(optimizeInstance)
+end
+
+local function optimizeCharacter(character)
+	if CONFIG.DisableCharacterParticles then
+		for _, obj in ipairs(character:GetDescendants()) do
+			if obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Smoke") then
+				obj.Enabled = false
+			end
+			if obj:IsA("BasePart") then
+				obj.CastShadow = false
+				obj.Material = Enum.Material.SmoothPlastic
+			end
+		end
+	end
+
+	character.DescendantAdded:Connect(function(obj)
+		if CONFIG.DisableCharacterParticles then
+			if obj:IsA("ParticleEmitter") or obj:IsA("Trail") then
+				obj.Enabled = false
+			end
+		end
+	end)
+end
+
+local function setupMemoryCleanup()
+	if CONFIG.ClearMemoryInterval > 0 then
+		task.spawn(function()
+			while true do
+				task.wait(CONFIG.ClearMemoryInterval)
+				for i = 1, 3 do
+					collectgarbage("collect")
+					task.wait(0.1)
+				end
+				pcall(function()
+					ContentProvider:PreloadAsync({})
+				end)
+			end
+		end)
+	end
+end
+
+local function optimizeAnimations(character)
+	if CONFIG.ReduceAnimationQuality and character then
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid then
+			humanoid.AnimationPlayed:Connect(function(track)
+				task.delay(0.1, function()
+					if track then
+						track:AdjustSpeed(1)
+					end
+				end)
+			end)
+		end
+	end
+end
+
+local function init()
+	optimizeLighting()
+	optimizeWorkspace()
+	setupMemoryCleanup()
+	optimizeAnimations(player.Character)
+
+	if player.Character then
+		optimizeCharacter(player.Character)
+		optimizeAnimations(player.Character)
+	end
+
+	player.CharacterAdded:Connect(function(char)
+		task.wait(1)
+		optimizeCharacter(char)
+		optimizeAnimations(char)
+	end)
+
+	UserInputService.MouseIconEnabled = true
+	camera.FieldOfView = math.min(camera.FieldOfView, 70)
+end
+
+local lastHeartbeat = tick()
+RunService.Heartbeat:Connect(function()
+	local now = tick()
+	local delta = now - lastHeartbeat
+	lastHeartbeat = now
+
+	if delta > 0.5 then
+		collectgarbage("collect")
+		for _, obj in ipairs(Workspace:GetDescendants()) do
+			if obj:IsA("BasePart") then
+				local dist = (obj.Position - camera.CFrame.Position).Magnitude
+				if dist > 500 then
+					obj.LocalTransparencyModifier = 1
+				end
+			end
+		end
+	end
+end)
+
+init()
+        end
+    end
+end)
+
 
 Players.PlayerAdded:Connect(function(player)
     SetupPlayer(player)
