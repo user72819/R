@@ -1,0 +1,647 @@
+getgenv().UNDETECTED_ENVIRONMENT_BY_ROBLOX_REDUCES_ANTI_CHEAT_FROM_GAMES_OR_NOT_BUT_STILL_IN_GOOD_USE_76382618163728198172682817263627288181727362718817273626271881737366327817263682919817272722662728273637282827727NSBSHAJABWJQKQOJWJWKWIWJWJJWHDJDIKDLSLWPQOWISJHSGWNQNMANSHSJDIDUSJJABSHDUDIIDJANANSHDHIDISKJANSBDJSISISJDHJDJSJAUUHJSJSNSSUDIJDSNBAHAIJDJDBSHUAUAYAHQOQPPQKSKSJSNAMAJHAUAISODOJDDJJSYAUAIPAPAOQIAYYSGSHSNMAMANSBJSISLALAPPAOQISYYDHSJAKNSNDBDHIAOAKAJSHDJISKANSBDHUSAOALAKJSHXUSOKANWBDHZUAIWNDHSJIAOQIDUSJAKNANDHUD_92829228928827377_8388181_172222724_252_2__7_7_76_7_9_7_6_5_6_8_9__________________________51617181827635372919102883736382910288263629291827728292827728291019287273829102873738299282727ISHSJANABQHUWISKSKSNSJSLSLSIDIFFPSWPLQKSKJDIWKWKNDJDSMMAJSHCICINDNWKAJDHHDIDISOISJCIVIIDKSKAKAPAOIDKFKSLOSIDJBJVIVICIDOOSJANSJXYCYXJNDNSJSKKAMAHDJKDJDJSKQUQYISKCNXHDOWKDJDKSKSKJSJ=function()
+
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/user72819/R/refs/heads/main/source.lua.txt'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "V1.0.0 Universal Aimbot",
+   Icon = 0,
+   LoadingTitle = "V1.0.0 Universal Aimbot",
+   LoadingSubtitle = "O_O",
+   ShowText = "",
+   Theme = "Amethyst",
+
+   ToggleUIKeybind = "Q",
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false,
+
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil,
+      FileName = "Empty"
+   },
+
+   Discord = {
+      Enabled = false,
+      Invite = "",
+      RememberJoins = true
+   }
+})
+
+local SettingsTab = Window:CreateTab("Setting", "cog")
+local TargetTab = Window:CreateTab("Target", "target")
+local ServerTab = Window:CreateTab("Server", "server")
+local InfoTab = Window:CreateTab("Info", "info")
+
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local PlaceId = game.PlaceId
+local JobId = game.JobId
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+local RunService = game:GetService("RunService")
+
+local AimbotEnabled = false
+local WallCheck = false
+local ESPEnabled = false
+local TeamCheckEnabled = false
+local TargetHead = false
+local TargetTorso = false
+local TargetLeftArm = false
+local TargetRightArm = false
+local TargetLeftLeg = false
+local TargetRightLeg = false
+
+TargetTab:CreateSection("Target Selection")
+
+TargetTab:CreateToggle({
+    Name = "Target Head",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetHead = Value
+    end
+})
+
+TargetTab:CreateToggle({
+    Name = "Target Torso",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetTorso = Value
+    end
+})
+
+TargetTab:CreateToggle({
+    Name = "Target Left Arm",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetLeftArm = Value
+    end
+})
+
+TargetTab:CreateToggle({
+    Name = "Target Right Arm",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetRightArm = Value
+    end
+})
+
+TargetTab:CreateToggle({
+    Name = "Target Left Leg",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetLeftLeg = Value
+    end
+})
+
+TargetTab:CreateToggle({
+    Name = "Target Right Leg",
+    CurrentValue = false,
+    Callback = function(Value)
+        TargetRightLeg = Value
+    end
+})
+
+ServerTab:CreateSection("Server")
+
+ServerTab:CreateButton({
+    Name = "Join Full Server",
+    Callback = function()
+        pcall(function()
+            local response = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Desc&limit=100"))
+            for _, server in pairs(response.data) do
+                if server.playing == server.maxPlayers and server.id ~= JobId and server.playing > 0 then
+                    TeleportService:TeleportToPlaceInstance(PlaceId, server.id, LocalPlayer)
+                    return
+                end
+            end
+            Rayfield:Notify({
+                Title = "Notification",
+                Content = "No Full Server Found!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+ServerTab:CreateButton({
+    Name = "Join Public Server",
+    Callback = function()
+        pcall(function()
+            local response = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+            for _, server in pairs(response.data) do
+                if server.playing < server.maxPlayers and server.playing > 0 and server.id ~= JobId then
+                    TeleportService:TeleportToPlaceInstance(PlaceId, server.id, LocalPlayer)
+                    return
+                end
+            end
+            Rayfield:Notify({
+                Title = "Notification",
+                Content = "No Public Server Found!",
+                Duration = 3
+            })
+        end)
+    end
+})
+
+ServerTab:CreateButton({
+    Name = "Join Empty Server",
+    Callback = function()
+        pcall(function()
+            local response = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+            local bestServer = nil
+            local lowestPlayers = math.huge
+            for _, server in pairs(response.data) do
+                if server.playing < lowestPlayers and server.playing > 0 and server.id ~= JobId then
+                    lowestPlayers = server.playing
+                    bestServer = server
+                end
+            end
+            if bestServer then
+                TeleportService:TeleportToPlaceInstance(PlaceId, bestServer.id, LocalPlayer)
+            else
+                Rayfield:Notify({
+                    Title = "Notification",
+                    Content = "No Low Player Server Found!",
+                    Duration = 3
+                })
+            end
+        end)
+    end
+})
+
+InfoTab:CreateSection("D")
+InfoTab:CreateParagraph({Title = "Discord", Content = "Dm greenguy0cool_74762 for any suggestions what to add."})
+
+InfoTab:CreateSection("T")
+InfoTab:CreateParagraph({Title = "Team", Content = "Some games may have custom teams so this will not work or error."})
+
+InfoTab:CreateSection("V")
+InfoTab:CreateParagraph({Title = "Version", Content = "This v1.0.0 universal aimbot code will be open-source soon."})
+
+local function IsEnemy(player)
+    if not player or player == LocalPlayer then
+        return false
+    end
+
+    if not TeamCheckEnabled then
+        return true
+    end
+
+    local myTeam = LocalPlayer.Team
+    local theirTeam = player.Team
+
+    if not myTeam or not theirTeam then
+        return true
+    end
+
+    if myTeam ~= theirTeam then
+        return true
+    end
+
+    if LocalPlayer.TeamColor and player.TeamColor then
+        if LocalPlayer.TeamColor ~= player.TeamColor then
+            return true
+        end
+    end
+    return false
+end
+
+local function GetTargetParts()
+    local parts = {}
+    if TargetHead then table.insert(parts, "Head") end
+    if TargetTorso then table.insert(parts, "HumanoidRootPart") end
+    if TargetLeftArm then table.insert(parts, "Left Arm") end
+    if TargetRightArm then table.insert(parts, "Right Arm") end
+    if TargetLeftLeg then table.insert(parts, "Left Leg") end
+    if TargetRightLeg then table.insert(parts, "Right Leg") end
+    return parts
+end
+
+SettingsTab:CreateSection("Aimbot")
+
+SettingsTab:CreateToggle({
+    Name = "Aimbot",
+    CurrentValue = false,
+    Callback = function(Value)
+        AimbotEnabled = Value
+        if AimbotEnabled then
+            RunService:BindToRenderStep("Aimbot", Enum.RenderPriority.Camera.Value, function()
+                local targetPart = nil
+                local closestDistance = math.huge
+                local targetParts = GetTargetParts()
+
+                if #targetParts == 0 then
+                    targetParts = {"HumanoidRootPart"}
+                end
+
+                for _, player in ipairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character then
+                        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                        if humanoid and humanoid.Health > 0 then
+                            if IsEnemy(player) then
+                                for _, partName in ipairs(targetParts) do
+                                    local aimPart = player.Character:FindFirstChild(partName)
+                                    if aimPart and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        local distance = (aimPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                                        if distance < closestDistance then
+                                            local canTarget = true
+                                            if WallCheck then
+                                                local raycastParams = RaycastParams.new()
+                                                raycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
+                                                raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+                                                local result = workspace:Raycast(Camera.CFrame.Position, (aimPart.Position - Camera.CFrame.Position).Unit * (aimPart.Position - Camera.CFrame.Position).Magnitude, raycastParams)
+                                                if result and not result.Instance:IsDescendantOf(player.Character) then
+                                                    canTarget = false
+                                                end
+                                            end
+                                            if canTarget then
+                                                targetPart = aimPart
+                                                closestDistance = distance
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+
+                if targetPart then
+                    Camera.CFrame = CFrame.new(Camera.CFrame.Position, targetPart.Position)
+                end
+            end)
+        else
+            pcall(function()
+                RunService:UnbindFromRenderStep("Aimbot")
+            end)
+        end
+    end
+})
+
+SettingsTab:CreateToggle({
+    Name = "Wall Check",
+    CurrentValue = false,
+    Callback = function(Value)
+        WallCheck = Value
+    end
+})
+
+local ESPFolder = Instance.new("Folder")
+ESPFolder.Name = "ESPFolder"
+ESPFolder.Parent = game:GetService("CoreGui")
+
+local ESPData = {}
+local PlayerConnections = {}
+
+local function RemoveESP(character)
+    if ESPData[character] then
+        for _, adornment in pairs(ESPData[character].Parts or {}) do
+            if adornment then adornment:Destroy() end
+        end
+        if ESPData[character].Tag then
+            ESPData[character].Tag:Destroy()
+        end
+        ESPData[character] = nil
+    end
+end
+
+local function CreateESP(character, player)
+    if ESPData[character] or not character.Parent then
+        return
+    end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then
+        return
+    end
+
+    local isEnemy = IsEnemy(player)
+    local limbNames = {"Head", "HumanoidRootPart", "Left Arm", "Right Arm", "Left Leg", "Right Leg"}
+    local limbParts = {}
+
+    for _, limbName in ipairs(limbNames) do
+        local limb = character:FindFirstChild(limbName)
+        if limb then
+            local box = Instance.new("BoxHandleAdornment")
+            box.Name = "ESP_" .. limbName .. "_" .. player.Name
+            box.Adornee = limb
+            if limbName == "HumanoidRootPart" then
+                box.Size = limb.Size + Vector3.new(0.2, 0.2, 0.2)
+            else
+                box.Size = limb.Size + Vector3.new(0.1, 0.1, 0.1)
+            end
+            box.Transparency = 0.6
+            box.Color3 = isEnemy and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(50, 255, 50)
+            box.AlwaysOnTop = true
+            box.ZIndex = 10
+            box.Parent = ESPFolder
+            table.insert(limbParts, box)
+        end
+    end
+
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    local billboard = nil
+    local nameLabel = nil
+    local infoLabel = nil
+
+    if hrp then
+        billboard = Instance.new("BillboardGui")
+        billboard.Name = "ESP_Tag_" .. player.Name
+        billboard.Adornee = hrp
+        billboard.Size = UDim2.new(0, 200, 0, 60)
+        billboard.StudsOffset = Vector3.new(0, 3, 0)
+        billboard.AlwaysOnTop = true
+        billboard.Parent = ESPFolder
+
+        nameLabel = Instance.new("TextLabel")
+        nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
+        nameLabel.BackgroundTransparency = 1
+        nameLabel.Text = player.Name
+        nameLabel.TextColor3 = isEnemy and Color3.fromRGB(255, 100, 100) or Color3.fromRGB(100, 255, 100)
+        nameLabel.Font = Enum.Font.SourceSansBold
+        nameLabel.TextSize = 14
+        nameLabel.TextStrokeTransparency = 0
+        nameLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+        nameLabel.Parent = billboard
+
+        infoLabel = Instance.new("TextLabel")
+        infoLabel.Size = UDim2.new(1, 0, 0.5, 0)
+        infoLabel.Position = UDim2.new(0, 0, 0.5, 0)
+        infoLabel.BackgroundTransparency = 1
+        infoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        infoLabel.Font = Enum.Font.SourceSans
+        infoLabel.TextSize = 12
+        infoLabel.TextStrokeTransparency = 0
+        infoLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+        infoLabel.Parent = billboard
+    end
+
+    ESPData[character] = {
+        Parts = limbParts,
+        Tag = billboard,
+        NameLabel = nameLabel,
+        InfoLabel = infoLabel,
+        Player = player,
+        IsEnemy = isEnemy,
+        Connection = nil
+    }
+end
+
+local function UpdateESP()
+    if not ESPEnabled then
+        return
+    end
+    for character, data in pairs(ESPData) do
+        if not character.Parent then
+            RemoveESP(character)
+            continue
+        end
+        local player = data.Player
+        if not player.Parent then
+            RemoveESP(character)
+            continue
+        end
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if not humanoid or humanoid.Health <= 0 then
+            RemoveESP(character)
+            continue
+        end
+        local isEnemy = IsEnemy(player)
+        if data.IsEnemy ~= isEnemy then
+            data.IsEnemy = isEnemy
+            for _, part in pairs(data.Parts or {}) do
+                part.Color3 = isEnemy and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(50, 255, 50)
+            end
+            if data.NameLabel then
+                data.NameLabel.TextColor3 = isEnemy and Color3.fromRGB(255, 100, 100) or Color3.fromRGB(100, 255, 100)
+            end
+        end
+        if data.InfoLabel and character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+            data.InfoLabel.Text = "HP: " .. math.floor(humanoid.Health) .. " | Dist: " .. math.floor(distance)
+        end
+    end
+end
+
+local function SetupPlayer(player)
+    if player == LocalPlayer then
+        return
+    end
+    if PlayerConnections[player] then
+        return
+    end
+    local function OnCharacterAdded(char)
+        char:WaitForChild("HumanoidRootPart", 5)
+        char:WaitForChild("Humanoid", 5)
+        if ESPEnabled then
+            CreateESP(char, player)
+        end
+        local connection
+        connection = char.AncestryChanged:Connect(function()
+            if not char.Parent then
+                RemoveESP(char)
+                if connection then
+                    connection:Disconnect()
+                end
+            end
+        end)
+        if ESPData[char] then
+            ESPData[char].Connection = connection
+        end
+    end
+    if player.Character then
+        OnCharacterAdded(player.Character)
+    end
+    local charConnection = player.CharacterAdded:Connect(OnCharacterAdded)
+    PlayerConnections[player] = charConnection
+end
+
+local function RemovePlayer(player)
+    if PlayerConnections[player] then
+        PlayerConnections[player]:Disconnect()
+        PlayerConnections[player] = nil
+    end
+    if player.Character then
+        RemoveESP(player.Character)
+    end
+end
+
+SettingsTab:CreateToggle({
+    Name = "Esp",
+    CurrentValue = false,
+    Callback = function(Value)
+        ESPEnabled = Value
+        if ESPEnabled then
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer and player.Character then
+                    task.wait(0.1)
+                    SetupPlayer(player)
+                end
+            end
+        else
+            for character, _ in pairs(ESPData) do
+                RemoveESP(character)
+            end
+            for player, conn in pairs(PlayerConnections) do
+                conn:Disconnect()
+            end
+            ESPData = {}
+            PlayerConnections = {}
+        end
+    end
+})
+
+SettingsTab:CreateToggle({
+    Name = "Team Check",
+    CurrentValue = false,
+    Callback = function(Value)
+        TeamCheckEnabled = Value
+    end
+})
+
+local number1number2 = false
+
+SettingsTab:CreateToggle({
+    Name = "Full bright",
+    CurrentValue = number1number2,
+    Flag = "",
+    Callback = function(Value)
+        number1number2 = Value
+    end,
+})
+
+local FullBrightExecuted = false
+local FullBrightEnabled = false
+local NormalLightingSettings = {}
+local LatestValue = true
+local Lighting = nil
+
+task.spawn(function()
+    while task.wait() do
+        if number1number2 then
+            if not FullBrightExecuted then
+                Lighting = game:GetService("Lighting")
+
+                NormalLightingSettings = {
+                    Brightness = Lighting.Brightness,
+                    ClockTime = Lighting.ClockTime,
+                    FogEnd = Lighting.FogEnd,
+                    GlobalShadows = Lighting.GlobalShadows,
+                    Ambient = Lighting.Ambient
+                }
+
+                Lighting:GetPropertyChangedSignal("Brightness"):Connect(function()
+                    if Lighting.Brightness ~= 1 and Lighting.Brightness ~= NormalLightingSettings.Brightness then
+                        NormalLightingSettings.Brightness = Lighting.Brightness
+                        if not FullBrightEnabled then
+                            repeat
+                                task.wait()
+                            until FullBrightEnabled
+                        end
+                        Lighting.Brightness = 1
+                    end
+                end)
+
+                Lighting:GetPropertyChangedSignal("ClockTime"):Connect(function()
+                    if Lighting.ClockTime ~= 12 and Lighting.ClockTime ~= NormalLightingSettings.ClockTime then
+                        NormalLightingSettings.ClockTime = Lighting.ClockTime
+                        if not FullBrightEnabled then
+                            repeat
+                                task.wait()
+                            until FullBrightEnabled
+                        end
+                        Lighting.ClockTime = 12
+                    end
+                end)
+
+                Lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+                    if Lighting.FogEnd ~= 786543 and Lighting.FogEnd ~= NormalLightingSettings.FogEnd then
+                        NormalLightingSettings.FogEnd = Lighting.FogEnd
+                        if not FullBrightEnabled then
+                            repeat
+                                task.wait()
+                            until FullBrightEnabled
+                        end
+                        Lighting.FogEnd = 786543
+                    end
+                end)
+
+                Lighting:GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+                    if Lighting.GlobalShadows ~= false and Lighting.GlobalShadows ~= NormalLightingSettings.GlobalShadows then
+                        NormalLightingSettings.GlobalShadows = Lighting.GlobalShadows
+                        if not FullBrightEnabled then
+                            repeat
+                                task.wait()
+                            until FullBrightEnabled
+                        end
+                        Lighting.GlobalShadows = false
+                    end
+                end)
+
+                Lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+                    if Lighting.Ambient ~= Color3.fromRGB(178, 178, 178) and Lighting.Ambient ~= NormalLightingSettings.Ambient then
+                        NormalLightingSettings.Ambient = Lighting.Ambient
+                        if not FullBrightEnabled then
+                            repeat
+                                task.wait()
+                            until FullBrightEnabled
+                        end
+                        Lighting.Ambient = Color3.fromRGB(178, 178, 178)
+                    end
+                end)
+
+                Lighting.Brightness = 1
+                Lighting.ClockTime = 12
+                Lighting.FogEnd = 786543
+                Lighting.GlobalShadows = false
+                Lighting.Ambient = Color3.fromRGB(178, 178, 178)
+
+                task.spawn(function()
+                    repeat
+                        task.wait()
+                    until FullBrightEnabled
+                    while task.wait() do
+                        if FullBrightEnabled ~= LatestValue then
+                            if not FullBrightEnabled then
+                                Lighting.Brightness = NormalLightingSettings.Brightness
+                                Lighting.ClockTime = NormalLightingSettings.ClockTime
+                                Lighting.FogEnd = NormalLightingSettings.FogEnd
+                                Lighting.GlobalShadows = NormalLightingSettings.GlobalShadows
+                                Lighting.Ambient = NormalLightingSettings.Ambient
+                            else
+                                Lighting.Brightness = 1
+                                Lighting.ClockTime = 12
+                                Lighting.FogEnd = 786543
+                                Lighting.GlobalShadows = false
+                                Lighting.Ambient = Color3.fromRGB(178, 178, 178)
+                            end
+                            LatestValue = not LatestValue
+                        end
+                    end
+                end)
+
+                FullBrightExecuted = true
+            end
+            FullBrightEnabled = true
+        else
+            FullBrightEnabled = false
+        end
+    end
+end)
+
+Players.PlayerAdded:Connect(function(player)
+    SetupPlayer(player)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        SetupPlayer(player)
+    end
+end
+
+Players.PlayerRemoving:Connect(RemovePlayer)
+RunService.Heartbeat:Connect(UpdateESP)
+end
+UNDETECTED_ENVIRONMENT_BY_ROBLOX_REDUCES_ANTI_CHEAT_FROM_GAMES_OR_NOT_BUT_STILL_IN_GOOD_USE_76382618163728198172682817263627288181727362718817273626271881737366327817263682919817272722662728273637282827727NSBSHAJABWJQKQOJWJWKWIWJWJJWHDJDIKDLSLWPQOWISJHSGWNQNMANSHSJDIDUSJJABSHDUDIIDJANANSHDHIDISKJANSBDJSISISJDHJDJSJAUUHJSJSNSSUDIJDSNBAHAIJDJDBSHUAUAYAHQOQPPQKSKSJSNAMAJHAUAISODOJDDJJSYAUAIPAPAOQIAYYSGSHSNMAMANSBJSISLALAPPAOQISYYDHSJAKNSNDBDHIAOAKAJSHDJISKANSBDHUSAOALAKJSHXUSOKANWBDHZUAIWNDHSJIAOQIDUSJAKNANDHUD_92829228928827377_8388181_172222724_252_2__7_7_76_7_9_7_6_5_6_8_9__________________________51617181827635372919102883736382910288263629291827728292827728291019287273829102873738299282727ISHSJANABQHUWISKSKSNSJSLSLSIDIFFPSWPLQKSKJDIWKWKNDJDSMMAJSHCICINDNWKAJDHHDIDISOISJCIVIIDKSKAKAPAOIDKFKSLOSIDJBJVIVICIDOOSJANSJXYCYXJNDNSJSKKAMAHDJKDJDJSKQUQYISKCNXHDOWKDJDKSKSKJSJ()
