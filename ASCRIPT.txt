@@ -1,0 +1,766 @@
+getgenv().UNDETECTED_ENVIRONMENT_BY_ROBLOX_REDUCES_ANTI_CHEAT_FROM_GAMES_OR_NOT_BUT_STILL_IN_GOOD_USE_76382618163728198172682817263627288181727362718817273626271881737366327817263682919817272722662728273637282827727NSBSHAJABWJQKQOJWJWKWIWJWJJWHDJDIKDLSLWPQOWISJHSGWNQNMANSHSJDIDUSJJABSHDUDIIDJANANSHDHIDISKJANSBDJSISISJDHJDJSJAUUHJSJSNSSUDIJDSNBAHAIJDJDBSHUAUAYAHQOQPPQKSKSJSNAMAJHAUAISODOJDDJJSYAUAIPAPAOQIAYYSGSHSNMAMANSBJSISLALAPPAOQISYYDHSJAKNSNDBDHIAOAKAJSHDJISKANSBDHUSAOALAKJSHXUSOKANWBDHZUAIWNDHSJIAOQIDUSJAKNANDHUD_92829228928827377_8388181_172222724_252_2__7_7_76_7_9_7_6_5_6_8_9__________________________51617181827635372919102883736382910288263629291827728292827728291019287273829102873738299282727ISHSJANABQHUWISKSKSNSJSLSLSIDIFFPSWPLQKSKJDIWKWKNDJDSMMAJSHCICINDNWKAJDHHDIDISOISJCIVIIDKSKAKAPAOIDKFKSLOSIDJBJVIVICIDOOSJANSJXYCYXJNDNSJSKKAMAHDJKDJDJSKQUQYISKCNXHDOWKDJDKSKSKJSJ=function()
+local y=loadstring(game:HttpGet('https://raw.githubusercontent.com/user72819/R/refs/heads/main/source.lua.txt'))()
+local R=y:CreateWindow({
+Name="V1.0.0 Universal Aimbot",
+Icon=0,
+LoadingTitle="V1.0.0 Universal Aimbot",
+LoadingSubtitle="O_O",
+ShowText="",
+Theme="Amethyst",
+ToggleUIKeybind="Q",
+DisableRayfieldPrompts=false,
+DisableBuildWarnings=false,
+ConfigurationSaving={
+Enabled=false,
+FolderName=nil,
+FileName="Empty"
+},
+Discord={
+Enabled=false,
+Invite="",
+RememberJoins=true
+}
+})
+local D=R:CreateTab("Setting","cog")
+local K=R:CreateTab("Target","target")
+local C=R:CreateTab("Server","server")
+local n=R:CreateTab("Info","info")
+local N=game:GetService("TeleportService")
+local m=game:GetService("HttpService")
+local x=game:GetService("Players")
+local v=game.v
+local p=game.p
+local LocalPlayer=x.LocalPlayer
+local Camera=workspace.CurrentCamera
+local B=game:GetService("RunService")
+local a=false
+local Q=false
+local f=false
+local M=false
+local F=false
+local L=false
+local G=false
+local I=false
+local H=false
+local J=false
+K:CreateSection("Target Body Part")
+K:CreateToggle({
+Name="Target Head",
+CurrentValue=false,
+Callback=function(Value)
+F=Value
+end
+})
+K:CreateToggle({
+Name="Target Torso",
+CurrentValue=false,
+Callback=function(Value)
+L=Value
+end
+})
+K:CreateToggle({
+Name="Target Left Arm",
+CurrentValue=false,
+Callback=function(Value)
+G=Value
+end
+})
+K:CreateToggle({
+Name="Target Right Arm",
+CurrentValue=false,
+Callback=function(Value)
+I=Value
+end
+})
+K:CreateToggle({
+Name="Target Left Leg",
+CurrentValue=false,
+Callback=function(Value)
+H=Value
+end
+})
+K:CreateToggle({
+Name="Target Right Leg",
+CurrentValue=false,
+Callback=function(Value)
+J=Value
+end
+})
+C:CreateSection("Server")
+C:CreateButton({
+Name="Join Full Server",
+Callback=function()
+pcall(function()
+local aK=m:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..v.."/servers/Public?sortOrder=Desc&limit=100"))
+for _,aM in pairs(aK.af)do
+if aM.playing==aM.maxPlayers and aM.id~=p and aM.playing>0 then
+N:TeleportToPlaceInstance(v,aM.id,LocalPlayer)
+return
+end
+end
+y:Notify({
+Title="Notification",
+Content="No Full Server Found!",
+Duration=3
+})
+end)
+end
+})
+C:CreateButton({
+Name="Join Public Server",
+Callback=function()
+pcall(function()
+local aK=m:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..v.."/servers/Public?sortOrder=Asc&limit=100"))
+for _,aM in pairs(aK.af)do
+if aM.playing<aM.maxPlayers and aM.playing>0 and aM.id~=p then
+N:TeleportToPlaceInstance(v,aM.id,LocalPlayer)
+return
+end
+end
+y:Notify({
+Title="Notification",
+Content="No Public Server Found!",
+Duration=3
+})
+end)
+end
+})
+C:CreateButton({
+Name="Join Empty Server",
+Callback=function()
+pcall(function()
+local aK=m:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..v.."/servers/Public?sortOrder=Asc&limit=100"))
+local V=nil
+local av=math.huge
+for _,aM in pairs(aK.af)do
+if aM.playing<av and aM.playing>0 and aM.id~=p then
+av=aM.playing
+V=aM
+end
+end
+if V then
+N:TeleportToPlaceInstance(v,V.id,LocalPlayer)
+else
+y:Notify({
+Title="Notification",
+Content="No Low Player Server Found!",
+Duration=3
+})
+end
+end)
+end
+})
+n:CreateSection("D")
+n:CreateParagraph({Title="Discord",Content="Dm greenguy0cool_74762 for any suggestions what to add."})
+n:CreateSection("T")
+n:CreateParagraph({Title="Team",Content="This may not work or may cause errors in games with custom teams."})
+n:CreateSection("V")
+n:CreateParagraph({Title="Version",Content="This v1.0.0 universal aimbot code will be open-source soon."})
+local function o(aI)
+if not aI or aI==LocalPlayer then
+return false
+end
+if not M then
+return true
+end
+local aw=LocalPlayer.Team
+local aS=aI.Team
+if not aw or not aS then
+return true
+end
+if aw~=aS then
+return true
+end
+if LocalPlayer.TeamColor and aI.TeamColor then
+if LocalPlayer.TeamColor~=aI.TeamColor then
+return true
+end
+end
+return false
+end
+local function k()
+local aH={}
+if F then table.insert(aH,"Head")end
+if L then table.insert(aH,"HumanoidRootPart")end
+if G then table.insert(aH,"Left Arm")end
+if I then table.insert(aH,"Right Arm")end
+if H then table.insert(aH,"Left Leg")end
+if J then table.insert(aH,"Right Leg")end
+return aH
+end
+D:CreateSection("Aimbot")
+D:CreateToggle({
+Name="Aimbot",
+CurrentValue=false,
+Callback=function(Value)
+a=Value
+if a then
+B:BindToRenderStep("Aimbot",Enum.RenderPriority.Camera.Value,function()
+local aP=nil
+local ac=math.huge
+local aQ=k()
+if#aQ==0 then
+aQ={"HumanoidRootPart"}
+end
+for _,aI in ipairs(x:GetPlayers())do
+if aI~=LocalPlayer and aI.Character then
+local al=aI.Character:FindFirstChildOfClass("Humanoid")
+if al and al.Health>0 then
+if o(aI)then
+for _,aG in ipairs(aQ)do
+local U=aI.Character:FindFirstChild(aG)
+if U and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")then
+local ah=(U.Position-LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+if ah<ac then
+local Z=true
+if Q then
+local aO,aj=pcall(function()
+local aJ=RaycastParams.new()
+aJ.FilterDescendantsInstances={LocalPlayer.Character}
+aJ.FilterType=Enum.RaycastFilterType.Blacklist
+aJ.IgnoreWater=true
+local ag=U.Position-Camera.CFrame.Position
+local aL=workspace:Raycast(Camera.CFrame.Position,ag.Unit*ag.Magnitude,aJ)
+if not aL then
+return true
+end
+if aL.Instance:IsDescendantOf(aI.Character)then
+return true
+end
+if aL.Instance.Transparency>=0.9 or aL.Instance.CanCollide==false then
+return true
+end
+if(aL.Position-U.Position).Magnitude<=3 then
+return true
+end
+return false
+end)
+if aO and not aj then
+return false
+end
+return true
+end
+if Z then
+aP=U
+ac=ah
+end
+end
+end
+end
+end
+end
+end
+end
+if aP then
+Camera.CFrame=CFrame.new(Camera.CFrame.Position,aP.Position)
+end
+end)
+else
+pcall(function()
+B:UnbindFromRenderStep("Aimbot")
+end)
+end
+end
+})
+D:CreateToggle({
+Name="Wall Check",
+CurrentValue=false,
+Callback=function(Value)
+Q=Value
+end
+})
+local g=Instance.new("Folder")
+g.Name="ESPFolder"
+g.Parent=game:GetService("CoreGui")
+local e={}
+local w={}
+local function z(aa)
+if e[aa]then
+for _,T in pairs(e[aa].Parts or{})do
+if T then T:Destroy()end
+end
+if e[aa].Tag then
+e[aa].Tag:Destroy()
+end
+e[aa]=nil
+end
+end
+local function d(aa,aI)
+if e[aa]or not aa.Parent then
+return
+end
+local al=aa:FindFirstChildOfClass("Humanoid")
+if not al then
+return
+end
+local aq=o(aI)
+local at={"Head","HumanoidRootPart","Left Arm","Right Arm","Left Leg","Right Leg"}
+local au={}
+for _,as in ipairs(at)do
+local ar=aa:FindFirstChild(as)
+if ar then
+local X=Instance.new("BoxHandleAdornment")
+X.Name="ESP_"..as.."_"..aI.Name
+X.Adornee=ar
+if as=="HumanoidRootPart"then
+X.Size=ar.Size+Vector3.new(0.2,0.2,0.2)
+else
+X.Size=ar.Size+Vector3.new(0.1,0.1,0.1)
+end
+X.Transparency=0.6
+X.Color3=aq and Color3.fromRGB(255,50,50)or Color3.fromRGB(50,255,50)
+X.AlwaysOnTop=true
+X.ZIndex=10
+X.Parent=g
+table.insert(au,X)
+end
+end
+local ak=aa:FindFirstChild("HumanoidRootPart")
+local W=nil
+local ax=nil
+local an=nil
+if ak then
+W=Instance.new("BillboardGui")
+W.Name="ESP_Tag_"..aI.Name
+W.Adornee=ak
+W.Size=UDim2.new(0,200,0,60)
+W.StudsOffset=Vector3.new(0,3,0)
+W.AlwaysOnTop=true
+W.Parent=g
+ax=Instance.new("TextLabel")
+ax.Size=UDim2.new(1,0,0.5,0)
+ax.BackgroundTransparency=1
+ax.Text=aI.Name
+ax.TextColor3=aq and Color3.fromRGB(255,100,100)or Color3.fromRGB(100,255,100)
+ax.Font=Enum.Font.SourceSansBold
+ax.TextSize=14
+ax.TextStrokeTransparency=0
+ax.TextStrokeColor3=Color3.new(0,0,0)
+ax.Parent=W
+an=Instance.new("TextLabel")
+an.Size=UDim2.new(1,0,0.5,0)
+an.Position=UDim2.new(0,0,0.5,0)
+an.BackgroundTransparency=1
+an.TextColor3=Color3.fromRGB(255,255,255)
+an.Font=Enum.Font.SourceSans
+an.TextSize=12
+an.TextStrokeTransparency=0
+an.TextStrokeColor3=Color3.new(0,0,0)
+an.Parent=W
+end
+e[aa]={
+Parts=au,
+Tag=W,
+NameLabel=ax,
+InfoLabel=an,
+Player=aI,
+o=aq,
+Connection=nil
+}
+local ae=aa.AncestryChanged:Connect(function()
+if not aa.Parent then
+z(aa)
+if ae then
+ae:Disconnect()
+end
+end
+end)
+e[aa].Connection=ae
+end
+local function l(aa,aI)
+if not aa or not aa.Parent then return end
+if aa:FindFirstChild("Humanoid")and aa:FindFirstChild("HumanoidRootPart")then
+if f then
+d(aa,aI)
+end
+else
+task.spawn(function()
+aa:WaitForChild("HumanoidRootPart",5)
+aa:WaitForChild("Humanoid",5)
+if f and aa.Parent then
+d(aa,aI)
+end
+end)
+end
+end
+local function E(aI)
+if aI==LocalPlayer then return end
+if not w[aI]then
+local _=aI.CharacterAdded:Connect(function(char)
+l(char,aI)
+end)
+w[aI]=_
+end
+if aI.Character then
+l(aI.Character,aI)
+end
+end
+local function A(aI)
+if w[aI]then
+w[aI]:Disconnect()
+w[aI]=nil
+end
+if aI.Character then
+z(aI.Character)
+end
+end
+local function O()
+if not f then
+return
+end
+for aa,af in pairs(e)do
+if not aa.Parent then
+z(aa)
+continue
+end
+local aI=af.Player
+if not aI.Parent then
+z(aa)
+continue
+end
+local al=aa:FindFirstChildOfClass("Humanoid")
+if not al or al.Health<=0 then
+z(aa)
+continue
+end
+local aq=o(aI)
+if af.o~=aq then
+af.o=aq
+for _,aF in pairs(af.Parts or{})do
+aF.Color3=aq and Color3.fromRGB(255,50,50)or Color3.fromRGB(50,255,50)
+end
+if af.NameLabel then
+af.NameLabel.TextColor3=aq and Color3.fromRGB(255,100,100)or Color3.fromRGB(100,255,100)
+end
+end
+if af.InfoLabel and aa:FindFirstChild("HumanoidRootPart")and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")then
+local ah=(aa.HumanoidRootPart.Position-LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+af.InfoLabel.Text="HP: "..math.floor(al.Health).." | Dist: "..math.floor(ah)
+end
+end
+end
+D:CreateToggle({
+Name="Esp",
+CurrentValue=false,
+Callback=function(Value)
+f=Value
+if f then
+for _,aI in ipairs(x:GetPlayers())do
+if aI~=LocalPlayer then
+E(aI)
+end
+end
+else
+for aa,_ in pairs(e)do
+z(aa)
+end
+for aI,ad in pairs(w)do
+ad:Disconnect()
+end
+e={}
+w={}
+end
+end
+})
+D:CreateToggle({
+Name="Team Check",
+CurrentValue=false,
+Callback=function(Value)
+M=Value
+end
+})
+local ay=false
+D:CreateToggle({
+Name="Full bright",
+CurrentValue=ay,
+Flag="",
+Callback=function(Value)
+ay=Value
+end,
+})
+local j=false
+local h=false
+local u={}
+local r=true
+local s=nil
+task.spawn(function()
+while task.wait(0.1)do
+if ay then
+if not j then
+s=game:GetService("Lighting")
+u={
+Brightness=s.Brightness,
+ClockTime=s.ClockTime,
+FogEnd=s.FogEnd,
+GlobalShadows=s.GlobalShadows,
+Ambient=s.Ambient
+}
+s:GetPropertyChangedSignal("Brightness"):Connect(function()
+if s.Brightness~=1 and s.Brightness~=u.Brightness then
+u.Brightness=s.Brightness
+if not h then
+repeat
+task.wait()
+until h
+end
+s.Brightness=1
+end
+end)
+s:GetPropertyChangedSignal("ClockTime"):Connect(function()
+if s.ClockTime~=12 and s.ClockTime~=u.ClockTime then
+u.ClockTime=s.ClockTime
+if not h then
+repeat
+task.wait()
+until h
+end
+s.ClockTime=12
+end
+end)
+s:GetPropertyChangedSignal("FogEnd"):Connect(function()
+if s.FogEnd~=786543 and s.FogEnd~=u.FogEnd then
+u.FogEnd=s.FogEnd
+if not h then
+repeat
+task.wait()
+until h
+end
+s.FogEnd=786543
+end
+end)
+s:GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+if s.GlobalShadows~=false and s.GlobalShadows~=u.GlobalShadows then
+u.GlobalShadows=s.GlobalShadows
+if not h then
+repeat
+task.wait()
+until h
+end
+s.GlobalShadows=false
+end
+end)
+s:GetPropertyChangedSignal("Ambient"):Connect(function()
+if s.Ambient~=Color3.fromRGB(178,178,178)and s.Ambient~=u.Ambient then
+u.Ambient=s.Ambient
+if not h then
+repeat
+task.wait()
+until h
+end
+s.Ambient=Color3.fromRGB(178,178,178)
+end
+end)
+s.Brightness=1
+s.ClockTime=12
+s.FogEnd=786543
+s.GlobalShadows=false
+s.Ambient=Color3.fromRGB(178,178,178)
+task.spawn(function()
+repeat
+task.wait()
+until h
+while task.wait()do
+if h~=r then
+if not h then
+s.Brightness=u.Brightness
+s.ClockTime=u.ClockTime
+s.FogEnd=u.FogEnd
+s.GlobalShadows=u.GlobalShadows
+s.Ambient=u.Ambient
+else
+s.Brightness=1
+s.ClockTime=12
+s.FogEnd=786543
+s.GlobalShadows=false
+s.Ambient=Color3.fromRGB(178,178,178)
+end
+r=not r
+end
+end
+end)
+j=true
+end
+h=true
+else
+h=false
+end
+end
+end)
+local t=false
+local q=false
+D:CreateToggle({
+Name="Lag Reducer",
+CurrentValue=false,
+Callback=function(Value)
+t=Value
+if Value and not q then
+q=true
+task.spawn(function()
+local x=game:GetService("Players")
+local B=game:GetService("RunService")
+local s=game:GetService("Lighting")
+local S=game:GetService("Workspace")
+local P=game:GetService("UserInputService")
+local c=game:GetService("ContentProvider")
+local aI=x.LocalPlayer
+local Y=S.CurrentCamera
+local b={
+ReduceParticles=true,
+ReduceTextures=true,
+DisableShadows=true,
+DisableBloom=true,
+LowerLOD=true,
+GlobalShadows=false,
+ClearMemoryInterval=60,
+ReduceAnimationQuality=true,
+HideExpensiveUI=true,
+DisableCharacterParticles=true
+}
+local function aC(ap)
+if not ap then return end
+if ap:IsA("BasePart")then
+ap.CastShadow=false
+if b.LowerLOD and ap:IsA("MeshPart")then
+ap.RenderFidelity=Enum.RenderFidelity.Performance
+end
+end
+if b.ReduceParticles then
+if ap:IsA("ParticleEmitter")then
+ap.Rate=math.max(0,ap.Rate*0.1)
+ap.Lifetime=NumberRange.new(0.1,0.5)
+elseif ap:IsA("Trail")then
+ap.Lifetime=0.1
+elseif ap:IsA("Smoke")or ap:IsA("Fire")or ap:IsA("Sparkles")then
+ap.Enabled=false
+end
+end
+if ap:IsA("Light")then
+ap.Shadows=false
+ap.Range=math.min(ap.Range,30)
+if ap:IsA("PointLight")or ap:IsA("SpotLight")then
+ap.Brightness=ap.Brightness*0.5
+end
+end
+if b.ReduceTextures then
+if ap:IsA("Decal")or ap:IsA("Texture")then
+if ap.Transparency>0.9 then
+ap:Destroy()
+end
+end
+end
+if b.HideExpensiveUI and ap:IsA("ScreenGui")then
+for _,ab in ipairs(ap:GetDescendants())do
+if ab:IsA("UIStroke")then
+ab.Thickness=math.min(ab.Thickness,2)
+end
+end
+end
+end
+local function aD()
+if b.DisableBloom then
+for _,ai in ipairs(s:GetChildren())do
+if ai:IsA("BloomEffect")or
+ai:IsA("BlurEffect")or
+ai:IsA("SunRaysEffect")or
+ai:IsA("ColorCorrectionEffect")then
+ai.Enabled=false
+elseif ai:IsA("Atmosphere")then
+ai.Density=0
+ai.Haze=0
+end
+end
+end
+s.GlobalShadows=b.GlobalShadows
+s.FogEnd=1000
+end
+local function aE()
+local aR=S:FindFirstChildOfClass("Terrain")
+if aR then
+aR.WaterWaveSize=0
+aR.WaterWaveSpeed=0
+aR.WaterReflectance=0
+aR.WaterTransparency=1
+end
+for _,az in ipairs(S:GetDescendants())do
+pcall(aC,az)
+end
+S.DescendantAdded:Connect(function(az)
+pcall(aC,az)
+end)
+end
+local function aB(aa)
+if not b.DisableCharacterParticles then return end
+for _,az in ipairs(aa:GetDescendants())do
+if az:IsA("ParticleEmitter")or az:IsA("Trail")or az:IsA("Smoke")then
+az.Enabled=false
+elseif az:IsA("BasePart")then
+az.CastShadow=false
+end
+end
+aa.DescendantAdded:Connect(function(az)
+if az:IsA("ParticleEmitter")or az:IsA("Trail")then
+az.Enabled=false
+end
+end)
+end
+local function aN()
+if b.ClearMemoryInterval<=0 then return end
+task.spawn(function()
+while true do
+task.wait(b.ClearMemoryInterval)
+for am=1,3 do
+collectgarbage("collect")
+task.wait(0.1)
+end
+pcall(function()
+c:PreloadAsync({})
+end)
+end
+end)
+end
+local function aA(aa)
+if not b.ReduceAnimationQuality or not aa then return end
+local al=aa:FindFirstChildOfClass("Humanoid")
+if al then
+al.AnimationPlayed:Connect(function(aT)
+task.delay(0.1,function()
+if aT then
+aT:AdjustSpeed(1)
+end
+end)
+end)
+end
+end
+local function ao()
+aD()
+aE()
+aN()
+if aI.Character then
+aB(aI.Character)
+aA(aI.Character)
+end
+aI.CharacterAdded:Connect(function(char)
+task.wait(1)
+aB(char)
+aA(char)
+end)
+P.MouseIconEnabled=true
+Y.FieldOfView=math.min(Y.FieldOfView,70)
+end
+ao()
+end)
+end
+end
+})
+x.PlayerAdded:Connect(function(aI)
+E(aI)
+end)
+for _,aI in ipairs(x:GetPlayers())do
+if aI~=LocalPlayer then
+E(aI)
+end
+end
+x.PlayerRemoving:Connect(A)
+B.Heartbeat:Connect(O)
+end
+UNDETECTED_ENVIRONMENT_BY_ROBLOX_REDUCES_ANTI_CHEAT_FROM_GAMES_OR_NOT_BUT_STILL_IN_GOOD_USE_76382618163728198172682817263627288181727362718817273626271881737366327817263682919817272722662728273637282827727NSBSHAJABWJQKQOJWJWKWIWJWJJWHDJDIKDLSLWPQOWISJHSGWNQNMANSHSJDIDUSJJABSHDUDIIDJANANSHDHIDISKJANSBDJSISISJDHJDJSJAUUHJSJSNSSUDIJDSNBAHAIJDJDBSHUAUAYAHQOQPPQKSKSJSNAMAJHAUAISODOJDDJJSYAUAIPAPAOQIAYYSGSHSNMAMANSBJSISLALAPPAOQISYYDHSJAKNSNDBDHIAOAKAJSHDJISKANSBDHUSAOALAKJSHXUSOKANWBDHZUAIWNDHSJIAOQIDUSJAKNANDHUD_92829228928827377_8388181_172222724_252_2__7_7_76_7_9_7_6_5_6_8_9__________________________51617181827635372919102883736382910288263629291827728292827728291019287273829102873738299282727ISHSJANABQHUWISKSKSNSJSLSLSIDIFFPSWPLQKSKJDIWKWKNDJDSMMAJSHCICINDNWKAJDHHDIDISOISJCIVIIDKSKAKAPAOIDKFKSLOSIDJBJVIVICIDOOSJANSJXYCYXJNDNSJSKKAMAHDJKDJDJSKQUQYISKCNXHDOWKDJDKSKSKJSJ()
